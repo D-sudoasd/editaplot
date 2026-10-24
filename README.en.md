@@ -5,10 +5,10 @@
   <p>
     <img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-4c6ef5">
     <img alt="Platform: Windows 10/11 x64 only" src="https://img.shields.io/badge/platform-Windows%2010%2F11%20x64%20only-0078d4">
-    <img alt="Python 3.10–3.12" src="https://img.shields.io/badge/Python-3.10%E2%80%933.12-3776ab">
+    <img alt="Python 3.11–3.12" src="https://img.shields.io/badge/Python-3.11%E2%80%933.12-3776ab">
     <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-7c3aed">
     <img alt="Origin 2021–2026b compatibility target" src="https://img.shields.io/badge/Origin-2021%E2%80%932026b%20target-2563eb">
-    <img alt="Fully verified with Origin 2024b" src="https://img.shields.io/badge/fully%20verified-2024b-0f766e">
+    <img alt="Live baseline: Origin 2024b with Python 3.12" src="https://img.shields.io/badge/live%20baseline-2024b%20%2B%20Python%203.12-0f766e">
     <a href="https://github.com/hang-jin/editaplot"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/hang-jin/editaplot?style=social"></a>
   </p>
   <p><a href="README.md">中文说明</a> · Chinese is the primary documentation language</p>
@@ -131,11 +131,10 @@ percentage and display calculations before rendering.
 
 Ask Codex for the SHAP dashboard and select `dashboard_blue_red`, `dashboard_viridis`, or
 `dashboard_red_blue`. Codex records the choice as the column mapping's `plot_mode`.
+I show one blue-to-wine representative below; all three palettes remain selectable within this template.
 
 <div align="center">
-  <img src="assets/gallery/shap-dashboard-blue-red.png" width="32%" alt="SHAP dashboard blue to wine">
-  <img src="assets/gallery/shap-dashboard-viridis.png" width="32%" alt="SHAP dashboard purple green yellow">
-  <img src="assets/gallery/shap-dashboard-red-blue.png" width="32%" alt="SHAP dashboard red yellow blue">
+  <img src="assets/gallery/shap-dashboard-blue-red.png" width="85%" alt="SHAP dashboard blue to wine">
 </div>
 
 ### Preparing the new materials and relationship routes
@@ -167,9 +166,15 @@ I made and manually checked these examples with synthetic teaching data. Metadat
   <img src="assets/gallery/circular-network.png" alt="Multi-panel circular directed weighted network" width="31%">
 </div>
 
-➡️ [Browse the 48 public showcase examples](docs/gallery.en.md)
+➡️ [Browse one representative for each of the 45 templates](docs/gallery.en.md)
 
-The current public capability set contains 41 Origin plotting routes. The repository retains 50 verification PNGs that passed live artifacts, object readback, human visual review, and the public-asset audit; 48 are displayed, while two hidden heatmap cases remain only as regression evidence. DSC, NMR, FTIR/IR, XPS comparison, multi-condition PL, multi-sample UV–Vis, the 30×30 dense heatmap, the 576-point composite SHAP figure, the multi-period circular directed weighted network, and the 3D dual-density baseline-locator route have all completed the Origin 2024b gate.
+I currently provide 45 Origin plotting routes and display one representative per template: 45 images. All 54 reviewed verification PNGs remain in the repository. The other nine palette or mode examples, their data, and their plotting capabilities remain available.
+
+My [fluorescence, time-frequency, multichannel and event-raster guide](docs/research_signals.md) explains the input boundary. Time-frequency figures display supplied cells; multichannel figures retain supplied waveform samples and a common amplitude scale. Event rasters retain supplied event times and explicitly declared empty trials.
+
+This update adds a **FLIM phasor plot** for upstream G/S coordinates and optional group names, with equal physical scales and a mathematical reference semicircle. The example uses synthetic teaching data; the route displays supplied phasors rather than calculating lifetimes from raw images. I also updated the bar example's palette and borderless external legend, with separate native checks for fill color, border color, and physical border width.
+
+All three SHAP palettes, steady-state and temperature-series PL, multi-sample UV–Vis, signed-effect bars, PR curves, and heatmap sizes remain available. The existing DSC, NMR, FTIR/IR, XPS comparison, dense heatmap, composite SHAP, circular network, and 3D density routes are retained. The current secure environment has passed six representative live regressions; the scope is stated under Requirements below.
 
 ### How long should one run take?
 
@@ -222,11 +227,15 @@ I created these palettes as original abstractions and redraws. They do not copy 
 | Item | What you need to know |
 |---|---|
 | OS | I have fully validated physical Windows 10/11 x64 computers; Mac, Linux, WSL, and VM versions are not available yet |
-| Origin | The compatibility target is Origin/OriginPro 2021–2026b; 2024b (10.15) is the only current fully verified baseline, while other target versions are reported from a local handshake, live tests, and template capabilities |
-| Python | You need 64-bit Python 3.10–3.12; the launcher selects it automatically, so no manual setup is needed |
+| Origin | The compatibility target is Origin/OriginPro 2021–2026b; the live regression baseline is CPython 3.12.14 + Pillow 13.0.0 + Origin 2024b (10.15.132), while other environments still require smoke and template capability checks |
+| Python | The secure runtime requires 64-bit CPython 3.11 or 3.12; I recommend 3.12 for new installations, and the launcher selects it automatically |
 | Input | You can use CSV, TXT, XLS, or XLSX, including Chinese headers and paths |
 
 You do not need to solve the Python environment first. I designed the root `editaplot.cmd` to find a compatible Python already on your computer and create an environment used only by this project. If none is available, the launcher returns a clear missing-Python diagnosis. Codex must then explain the separate system change and wait for your consent before using official winget to install user-scope Python 3.12; the installation guide provides the official python.org route when winget is unavailable. This setup does not install or modify Origin. Doctor performs read-only discovery; a real pre-render smoke test starts a dedicated Origin instance and validates the connection.
+
+The security dependency lock now uses Pillow 13.0.0 and no longer supports CPython 3.10. Existing users can update the complete repository and rerun `setup`: the launcher selects a compatible interpreter and rebuilds the project environment, retaining the old environment and replaced Skill as backups without changing global Python. Missing compatible Python or failed preparation stops explicitly instead of falling back to an older Pillow. If an old plan reports `analysis_changed`, repeat data understanding and confirmation and generate a new plan; do not hand-edit its JSON.
+
+The live evidence covers six representative cases: XPS fit/comparison, error bars, a time–frequency matrix, event raster, and 3D. Drawing/export, independent saved-project reopening, data/axes/physical geometry, and re-exported PNG pixel identity passed. This does not establish every route or every Origin version. Python 3.11 has no live-verification claim; the older Python 3.10 record remains historical evidence.
 
 ### Minimum permissions for Codex
 
@@ -339,7 +348,7 @@ I keep the public repository complete and runnable. To avoid mixing private data
 |---|---|
 | Apache-2.0 source, complete Skill, sanitized runtime | `DEVELOPMENT_LEDGER.md`, internal plans, development logs |
 | Neutral synthetic examples and original palette assets | Your original data, reference screenshots, material without redistribution rights |
-| 50 reviewed, metadata-sanitized verification PNGs; 48 are displayed across 41 plotting routes | OPJU/PDF/TIF, RenderPlans, readback and verification JSON |
+| 54 reviewed, metadata-sanitized verification PNGs; one representative per route, 45 displayed images | OPJU/PDF/TIF, RenderPlans, readback and verification JSON |
 | Bilingual docs, tests, dependency locks, asset/runtime manifests | Absolute paths, caches, virtual environments, temporary outputs, secrets and tokens |
 
 To avoid publishing local material by mistake, I use an allowlist, secret scanning, PNG checks, and SHA-256 manifests. See [release and licensing boundaries](docs/release-boundaries.md).
